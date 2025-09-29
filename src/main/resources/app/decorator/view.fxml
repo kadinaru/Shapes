@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane prefHeight="800.0" prefWidth="1200.0"
+            xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="app.decorator.Controller">
+
+    <!-- Верхняя панель с действиями -->
+    <top>
+        <ToolBar style="-fx-background-color: #e0e0e0;">
+            <Button text="Отменить" onAction="#undoLast"/>
+            <Button text="Очистить" onAction="#onClickClear"/>
+            <Separator orientation="VERTICAL"/>
+            <Label text="Режим работы:"/>
+            <ChoiceBox fx:id="choiceWorkMode" prefWidth="150"/>
+            <Button text="Удалить выделенное" onAction="#deleteSelectedShape"/>
+        </ToolBar>
+    </top>
+
+
+    <!-- Левая панель инструментов -->
+    <left>
+        <VBox spacing="15.0" alignment="TOP_CENTER"
+              style="-fx-background-color: #f9f9f9; -fx-padding: 15; -fx-border-color: #cccccc; -fx-border-width: 0 1 0 0;">
+            <children>
+                <!-- Список фигур -->
+                <Label text="Выберите фигуру:"/>
+                <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0"/>
+
+                <!-- Настройки цвета -->
+                <Label text="Цвета:"/>
+                <GridPane hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT"/>
+                        <ColumnConstraints/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints valignment="CENTER"/>
+                        <RowConstraints valignment="CENTER"/>
+                    </rowConstraints>
+                    <children>
+                        <Label text="Заливка:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <ColorPicker fx:id="colorPicker" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Контур:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <ColorPicker fx:id="colorPickerStroke" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    </children>
+                </GridPane>
+
+                <!-- Второй цвет (для градиента) -->
+                <HBox fx:id="boxGradient" spacing="8" alignment="CENTER" visible="false">
+                    <Label text="Второй цвет:"/>
+                    <ColorPicker fx:id="colorPicker1"/>
+                </HBox>
+
+                <!-- Настройки размера и эффектов -->
+                <Label text="Настройки:"/>
+                <VBox spacing="8">
+                    <TextField fx:id="fieldSize" promptText="Размер"/>
+                    <ChoiceBox fx:id="choiceFill" prefWidth="180"/>
+                    <ChoiceBox fx:id="choiceEffect" prefWidth="180"/>
+                </VBox>
+
+                <!-- Тумблеры -->
+                <HBox spacing="10" alignment="CENTER">
+                    <ToggleButton fx:id="toggleSplit" text="Разделить"/>
+                    <ToggleButton fx:id="toggleStipple" text="Прерывистый"/>
+                </HBox>
+
+                <!-- Информация о последней фигуре -->
+                <Label fx:id="textLast" text="Ничего не нарисовано" style="-fx-text-fill: #555;"/>
+            </children>
+        </VBox>
+    </left>
+
+
+    <!-- Правая рабочая область -->
+    <center>
+        <AnchorPane style="-fx-background-color: white;">
+            <children>
+                <Canvas fx:id="canvas" width="900.0" height="700.0"
+                        onMouseDragged="#drawShape" onMousePressed="#drawShape"
+                        style="-fx-border-color: #cccccc; -fx-border-width: 1;"/>
+                <Pane fx:id="pane"/>
+            </children>
+        </AnchorPane>
+    </center>
+
+</BorderPane>
